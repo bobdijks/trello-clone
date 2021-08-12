@@ -3,7 +3,7 @@ class ListsController < ApplicationController
 
   # GET /lists or /lists.json
   def index
-    @lists = List.all
+    @lists = List.sorted
   end
 
   # GET /lists/1 or /lists/1.json
