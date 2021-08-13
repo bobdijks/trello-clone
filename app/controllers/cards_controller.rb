@@ -1,12 +1,14 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: %i[ show edit update destroy ]
+  before_action :set_card, only: [:show, :edit, :update, :destroy, :move]
 
-  # GET /cards or /cards.json
+  # GET /cards
+  # GET /cards.json
   def index
     @cards = Card.all
   end
 
-  # GET /cards/1 or /cards/1.json
+  # GET /cards/1
+  # GET /cards/1.json
   def show
   end
 
@@ -19,41 +21,56 @@ class CardsController < ApplicationController
   def edit
   end
 
-  # POST /cards or /cards.json
+  # POST /cards
+  # POST /cards.json
   def create
     @card = Card.new(card_params)
 
     respond_to do |format|
       if @card.save
-        format.html { redirect_to @card, notice: "Card was successfully created." }
+
+        ActionCable.server.broadcast "board", { commit: 'addCard', payload: render_to_string(:show, formats: [:json]) }
+
+        format.html { redirect_to @card, notice: 'Card was successfully created.' }
         format.json { render :show, status: :created, location: @card }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new }
         format.json { render json: @card.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /cards/1 or /cards/1.json
+  # PATCH/PUT /cards/1
+  # PATCH/PUT /cards/1.json
   def update
     respond_to do |format|
       if @card.update(card_params)
-        format.html { redirect_to @card, notice: "Card was successfully updated." }
+
+        ActionCable.server.broadcast "board", { commit: 'editCard', payload: render_to_string(:show, formats: [:json]) }
+
+        format.html { redirect_to @card, notice: 'Card was successfully updated.' }
         format.json { render :show, status: :ok, location: @card }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit }
         format.json { render json: @card.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /cards/1 or /cards/1.json
+  # DELETE /cards/1
+  # DELETE /cards/1.json
   def destroy
     @card.destroy
     respond_to do |format|
-      format.html { redirect_to cards_url, notice: "Card was successfully destroyed." }
+      format.html { redirect_to cards_url, notice: 'Card was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def move
+    @card.update(card_params)
+    ActionCable.server.broadcast "board", { commit: 'moveCard', payload: render_to_string(:show, formats: [:json]) }
+    render action: :show
   end
 
   private
@@ -62,8 +79,8 @@ class CardsController < ApplicationController
       @card = Card.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
+    # Never trust parameters from the scary internet, only allow the white list through.
     def card_params
-      params.require(:card).permit(:list, :name, :position)
+      params.require(:card).permit(:list_id, :name, :position)
     end
 end

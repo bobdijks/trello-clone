@@ -1,6 +1,7 @@
 <template>
+
   <div class="container">
-    <div id="app" class="row">
+    <draggable :list="lists" :options="{group: 'lists'}" class="row dragArea" @end="listMoved">
       <div v-for="(list, index) in original_lists" class="col-3">
         <h6>{{ list.name }}</h6>
 
@@ -16,22 +17,37 @@
         </div>
 
       </div>
-    </div>
+    </draggable>
   </div>
 </template>
 
 <script>
+
 import Rails from '@rails/ujs';
+import draggable from 'vuedraggable';
 
 export default {
- props: ["original_lists"],
- data: function() {
-   return {
-     messages: {},
-     lists: this.original_lists,
-   }
- },
+  components: { draggable },
+  props: ["original_lists"],
+  data: function() {
+    return {
+      messages: {},
+      lists: this.original_lists,
+    }
+  },
   methods: {
+    listMoved: function(event) {
+      var data = new FormData
+      data.append("list[position]", event.newIndex + 1)
+
+      Rails.ajax({
+        beforeSend: () => true,
+        url: `/lists/${this.lists[event.newIndex].id}/move`,
+        type: "PATCH",
+        data: data,
+        dataType: "json",
+      })
+    },
     submitMessages: function(list_id) {
       var data = new FormData
       data.append("card[list_id]", list_id)
@@ -44,7 +60,7 @@ export default {
         dataType: "json",
         success: (data) => {
           const index = this.lists.findIndex(item => item.id == list_id)
-          this.list[index].cards.push(data)
+          this.lists[index].cards.push(data)
           this.messages[list_id] = undefined
         }
       })
@@ -54,8 +70,7 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
+.dragArea {
+  min-height: 10px;
 }
 </style>
