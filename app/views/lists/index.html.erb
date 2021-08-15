@@ -1,9 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<div class="container">
-  <h1>Lists</h1>
-
-  <%= link_to 'New List', new_list_path %>
-
-  <%= tag.div id: :boards, data: { lists: @lists.to_json(include: :cards) } %>
+<div class="mb-2">
+  <%= link_to 'Create a new List', new_list_path %>
 </div>
+
+<%= tag.div id: :boards, data: { lists: @lists.to_json(include: :cards) } %>
+

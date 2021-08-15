@@ -14,14 +14,20 @@ pre {
   font-size: 11px; }
 
 a {
-  color: #000; }
+  color: #000;
+  font-weight: bold;
+}
+
+h6 {
+  color: #251c24;
+}
 
 a:visited {
   color: #666; }
 
 a:hover {
-  color: #fff;
-  background-color: #000; }
+  color: #fff !important;
+ }
 
 th {
   padding-bottom: 5px; }

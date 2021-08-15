@@ -1,24 +1,22 @@
 <template>
 
-  <div class="container">
-    <draggable :list="lists" :options="{group: 'lists'}" class="row dragArea" @end="listMoved">
-      <div v-for="(list, index) in original_lists" class="col-3">
+
+    <draggable :list="lists" :options="{group: 'lists'}" class="board dragArea" @end="listMoved">
+      <div v-for="(list, index) in original_lists" class="list">
         <h6>{{ list.name }}</h6>
 
-        <hr />
+        <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
+          <div v-for="(card, index) in list.cards" class="card card-body mb-3">
+            {{ card.name }}
+          </div>
+        </draggable>
 
-        <div v-for="(card, index) in list.cards" class="card card-body mb-3">
-          {{ card.name }}
-        </div>
-
-        <div class="card card-body">
-          <textarea v-model="messages[list.id]" class="form-control"></textarea>
-          <button v-on:click="submitMessages(list.id)" class="btn btn-secondary">Add</button>
-        </div>
+        <textarea v-model="messages[list.id]" class="form-control mb-1"></textarea>
+        <button v-on:click="submitMessages(list.id)" class="btn btn-secondary">Add</button>
 
       </div>
     </draggable>
-  </div>
+
 </template>
 
 <script>
@@ -36,6 +34,28 @@ export default {
     }
   },
   methods: {
+    cardMoved: function(event) {
+      const evt = event.added || event.moved
+      if (evt == undefined) { return }
+
+      const element = evt.element
+      const list_index = this.lists.findIndex((list) => {
+        return list.cards.find((card) => {
+          return card.id === element.id
+        })
+      })
+      var data = new FormData
+      data.append("card[list_id]", this.lists[list_index].id)
+      data.append("card[position]", evt.newIndex + 1)
+
+      Rails.ajax({
+        beforeSend: () => true,
+        url: `/cards/${element.id}/move`,
+        type: "PATCH",
+        data: data,
+        dataType: "json",
+      })
+    },
     listMoved: function(event) {
       var data = new FormData
       data.append("list[position]", event.newIndex + 1)
@@ -72,5 +92,30 @@ export default {
 <style scoped>
 .dragArea {
   min-height: 10px;
+}
+
+.board {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.list {
+  display: inline-block;
+  margin-right: 20px;
+  vertical-align: top;
+  width: 270px;
+  background: #d6d6d6;
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.btn-secondary {
+  background-color: #FFB2B2;
+  color: #fff;
+  border: #969696 solid 1px;
 }
 </style>
