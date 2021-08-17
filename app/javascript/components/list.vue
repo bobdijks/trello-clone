@@ -3,13 +3,11 @@
     <h6>{{ list.name }}</h6>
 
     <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
-      <div v-for="(card, index) in list.cards" class="card card-body mb-3">
-        {{ card.name }}
-      </div>
+      <card v-for="card in list.cards" :card="card"></card>
     </draggable>
 
-    <a v-if="!editing" v-on:click="editing=true" >Add a card</a>
-      <textarea v-if="editing" v-model="message" class="form-control mb-1"></textarea>
+    <a v-if="!editing" v-on:click="startEditing" >Add a card</a>
+      <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-1"></textarea>
       <button v-if="editing" v-on:click="submitMessage" class="btn btn-secondary">Add</button>
     <a v-if="editing" v-on:click="editing=false" >Cancel</a>
   </div>
@@ -25,11 +23,16 @@
     data: function() {
       return {
         editing: false,
-        message: ""
+        message: "",
     }
   },
 
   methods: {
+    startEditing: function() {
+      this.editing = true
+      this.$nextTick(() => { this.$refs.message.focus() })
+    },
+
     submitMessage: function() {
       var data = new FormData
       data.append("card[list_id]", this.list.id)
