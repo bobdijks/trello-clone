@@ -28,9 +28,6 @@ class CardsController < ApplicationController
 
     respond_to do |format|
       if @card.save
-
-        ActionCable.server.broadcast "board", { commit: 'addCard', payload: render_to_string(:show, formats: [:json]) }
-
         format.html { redirect_to @card, notice: 'Card was successfully created.' }
         format.json { render :show, status: :created, location: @card }
       else
