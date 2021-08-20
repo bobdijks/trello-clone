@@ -11,12 +11,13 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ card.name }}</h5>
+          <h5 class="modal-title">Change Name</h5>
         </div>
         <div class="modal-body">
           <input v-model="name" class="form-control"></input>
         </div>
         <div class="modal-footer">
+          <button @click="remove" type="button" class="btn btn-primary">Delete Card</button>
           <button @click="save" type="button" class="btn btn-secondary">Save changes</button>
         </div>
       </div>
@@ -56,8 +57,15 @@ export default {
           const list_index = window.store.lists.findIndex((item) => item.id === this.list.id)
           const card_index = window.store.lists[list_index].cards.findIndex((item) => item.id === this.card.id)
           window.store.lists[list_index].cards.splice(card_index, 1, data)
-          this.editing = false
-          // Close Modal
+        }
+      })
+    },
+
+    remove: function() {
+      Rails.ajax({
+        url: `/cards/${this.card.id}`,
+        type: "DELETE",
+        success: function() {
 
         }
       })
@@ -84,5 +92,23 @@ export default {
 .btn-secondary:hover {
   background-color: #A93434;
   border: none;
+}
+
+.btn-primary {
+  background-color: #fff;
+  color: #bc3a3a;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #fff;
+  color: #bc3a3a;
+  font-weight: 600;
+  border: none;
+}
+
+.modal-content {
+  background-color: #fafafa;
 }
 </style>
