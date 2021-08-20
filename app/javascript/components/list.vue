@@ -6,7 +6,7 @@
       <card v-for="card in list.cards" :card="card" :key="card.id" :list="list"></card>
     </draggable>
 
-    <a v-if="!editing" v-on:click="startEditing" >Add an activity</a>
+    <a v-if="!editing" v-on:click="startEditing">Add an activity</a>
       <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-3"></textarea>
       <button v-if="editing" v-on:click="submitMessage" class="btn btn-secondary">Add</button>
     <a v-if="editing" v-on:click="editing=false" >Cancel</a>
@@ -79,5 +79,19 @@
 </script>
 
 <style scoped>
+.btn-secondary {
+  background-color: #bc3a3a;
+  color: #fafafa;
+  font-weight: 600;
+  border: none;
+}
 
+.btn-secondary:hover {
+  background-color: #A93434;
+  border: none;
+}
+
+a {
+  margin-left: 5px;
+}
 </style>

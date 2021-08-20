@@ -1,6 +1,6 @@
 body {
   background-color: #fff;
-  background-image: image-url("sky.jpg");
+  background-image: image-url("sky2.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   color: #333;
@@ -17,8 +17,8 @@ pre {
   font-size: 11px; }
 
 a {
-  color: #000;
-  font-weight: bold;
+  color: #251c24;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -26,11 +26,8 @@ h6 {
   color: #251c24;
 }
 
-a:visited {
-  color: #666; }
-
 a:hover {
-  color: #fff !important;
+  color: #513d4e !important;
  }
 
 th {

@@ -68,5 +68,20 @@ export default {
 </script>
 
 <style scoped>
+.card {
+  border: 1px solid #bebebe;
+  font-weight: normal;
+}
 
+.btn-secondary {
+  background-color: #bc3a3a;
+  color: #fafafa;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #A93434;
+  border: none;
+}
 </style>

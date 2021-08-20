@@ -89,9 +89,21 @@ export default {
   vertical-align: top;
   width: 270px;
   background: #d6d6d6;
+  box-shadow: 1px 1px 1px 1px #251c24;
   border-radius: 3px;
   padding: 10px;
   margin-bottom: 50px;
+}
+
+.btn-secondary {
+  background-color: #bc3a3a;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #A93434;
+  border: none;
 }
 
 .edit-list {
@@ -100,8 +112,23 @@ export default {
   vertical-align: top;
   width: 270px;
   background: #251c24;
+  box-shadow: 1px 1px 1px 1px #fafafa;
   color: #fff;
   border-radius: 3px;
   padding: 10px;
 }
+
+a {
+  color: #fafafa;
+  margin-left: 5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #fff !important;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 </style>
