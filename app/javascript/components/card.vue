@@ -71,6 +71,7 @@ export default {
 .card {
   border: 1px solid #bebebe;
   font-weight: normal;
+  padding: 10px 10px;
 }
 
 .btn-secondary {
