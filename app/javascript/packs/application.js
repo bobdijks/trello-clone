@@ -8,6 +8,8 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 
+import "@fortawesome/fontawesome-free/css/all"
+
 // Vue related
 
 import Vue from 'vue/dist/vue.esm'

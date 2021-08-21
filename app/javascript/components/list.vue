@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <h6 class="text-center">{{ list.name.toUpperCase() }}</h6>
+    <div class="d-flex justify-content-between"><h6 class="text-center">{{ list.name.toUpperCase() }}</h6><a><i class="fas fa-wrench"></i></a></div>
 
     <draggable v-model="list.cards" group="cards"  class="dragArea" @end="cardMoved">
       <card v-for="card in list.cards" :card="card" :key="card.id" :list="list"></card>
@@ -84,6 +84,7 @@
   color: #fafafa;
   font-weight: 600;
   border: none;
+  margin-right: 5px;
 }
 
 .btn-secondary:hover {
@@ -91,7 +92,4 @@
   border: none;
 }
 
-a {
-  margin-left: 5px;
-}
 </style>
