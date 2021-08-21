@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div class="d-flex justify-content-between"><h6 class="text-center">{{ list.name.toUpperCase() }}</h6><a><i class="fas fa-wrench"></i></a></div>
+    <div class="d-flex justify-content-between"><h6 class="text-center">{{ list.name.toUpperCase() }}</h6><a @click="editing=true" ><i class="fas fa-pen"></i></a></div>
 
     <draggable v-model="list.cards" group="cards"  class="dragArea" @end="cardMoved">
       <card v-for="card in list.cards" :card="card" :key="card.id" :list="list"></card>
