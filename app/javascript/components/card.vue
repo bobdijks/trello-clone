@@ -39,9 +39,7 @@ export default {
   },
   methods: {
     closeModal: function (event) {
-      if (event.target.classList.contains("modal")) {
-        this.editing = false
-      }
+      if (event.target.classList.contains("modal")) { this.editing = false }
     },
 
     save: function() {
@@ -49,20 +47,20 @@ export default {
       data.append("card[name]", this.name)
 
       Rails.ajax({
+        beforeSend: () => true,
         url: `/cards/${this.card.id}`,
         type: "PATCH",
         data: data,
         dataType: "json",
         succes: (data) => {
-          const list_index = window.store.lists.findIndex((item) => item.id === this.list.id)
-          const card_index = window.store.lists[list_index].cards.findIndex((item) => item.id === this.card.id)
-          window.store.lists[list_index].cards.splice(card_index, 1, data)
+          this.editing = false
         }
       })
     },
 
     remove: function() {
       Rails.ajax({
+        beforeSend: () => true,
         url: `/cards/${this.card.id}`,
         type: "DELETE",
         success: function() {
